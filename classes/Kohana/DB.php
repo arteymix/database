@@ -135,5 +135,20 @@ class Kohana_DB {
 	{
 		return new Database_Expression($string, $parameters);
 	}
+	
+	
+	/**
+	 * Create a valid SQL set statement. Warning: empty sets, as being simple
+	 * parentesis "()" are not considered as a SET.
+	 * 
+	 *     $query->where('id', 'IN', DB::set($ids));
+	 * 
+	 * @param   array $values 
+	 * @return  string
+	 */
+	public static function set(array $values) {
+		// DB::expr is maped on indivudual value to preserve NULL.
+		return DB::expr('(' . implode(',', array_map('DB::expr', $values)) . ')');
+	}
 
 } // End DB
